@@ -13,3 +13,6 @@ dist/
 
 # AML workspace config file
 *config.json
+
+# ssh
+ssh
