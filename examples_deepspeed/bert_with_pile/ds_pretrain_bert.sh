@@ -5,8 +5,8 @@ dir=`pwd`
 ### The main configs are from Megatron-LM paper
 ### https://arxiv.org/abs/1909.08053. Choose based on your desired model size
 ### or build your own configs.
-seq_len=512
-global_batch_size=1024
+seq_len=1024
+global_batch_size=256
 lr=1e-4
 min_lr=1e-5
 
@@ -52,7 +52,7 @@ init_std=0.02
 ###############################################################################
 ### Training duration configs
 ## The main termination condition, original Megatron paper trains for 2M iters.
-train_iters_in_million=2
+train_iters_in_million=1
 train_iters=$((${train_iters_in_million} * 1000000))
 ###############################################################################
 ### lr configs
@@ -65,7 +65,7 @@ lr_decay_style="linear"
 ###############################################################################
 ### Parallelism configs
 ## Model parallelism, 1 is no MP
-mp_size=1
+mp_size=2
 
 ## Pipeline parallelism. To disable PP, set pp_size to 1 and no_pp to true.
 ## Currently pipeline parallelism is not supported for BERT model: DeepSpeed's
@@ -78,8 +78,10 @@ no_pp="true"
 zero_stage=0
 
 ## Total number of GPUs. ds_ssh is from DeepSpeed library.
-num_gpus=$(($(ds_ssh nvidia-smi --query-gpu=name --format=csv,noheader | wc -l)-2))
-num_gpus_pernode=$(nvidia-smi --query-gpu=name --format=csv,noheader | wc -l)
+# num_gpus=$(($(ds_ssh nvidia-smi --query-gpu=name --format=csv,noheader | wc -l)-2))
+num_gpus=4
+# num_gpus_pernode=$(nvidia-smi --query-gpu=name --format=csv,noheader | wc -l)
+num_gpus_pernode=1
 num_node=$(( ${num_gpus} / ${num_gpus_pernode} ))
 ## Data parallel size.
 dp_size=$(( ${num_gpus} / ${pp_size} / ${mp_size} ))
@@ -264,4 +266,5 @@ if [[ $iteration -gt 0 ]]; then
     ds_ssh "echo $iteration_2 > $iteration_file_2"
 fi
 
-deepspeed ${dir}/../../pretrain_bert.py ${megatron_options} ${data_options} ${deepspeed_options} &>> ${log_path}/${jobname}_${host}_${current_time}.log
+# deepspeed ${dir}/../../pretrain_bert.py ${megatron_options} ${data_options} ${deepspeed_options} &>> ${log_path}/${jobname}_${host}_${current_time}.log
+echo deepspeed ${dir}/../../pretrain_bert.py ${megatron_options} ${data_options} ${deepspeed_options}
