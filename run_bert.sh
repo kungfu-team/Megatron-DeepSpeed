@@ -8,7 +8,7 @@ deepspeed pretrain_bert.py \
     --tensor-model-parallel-size 2 \
     --lr-decay-iters 1000000 \
     --lr-warmup-iters 10000 \
-    --micro-batch-size 128 \
+    --micro-batch-size 8 \
     --global-batch-size 256 \
     --num-layers 24 \
     --hidden-size 1024 \
@@ -26,7 +26,7 @@ deepspeed pretrain_bert.py \
     --save-interval 10000 \
     --weight-decay 1e-2 \
     --clip-grad 1.0 \
-    --num-workers 4 \
+    --num-workers 1 \
     --fp16 \
     --load /vc_data_blob/users/marcel/project/bert_with_pile/checkpoint/bert-pile-0.336B-iters-1M-lr-1e-4-min-1e-5-wmup-10000-dcy-1M-sty-linear-gbs-256-mbs-128-gpu-4-zero-0-mp-2-pp-1-nopp \
     --save /vc_data_blob/users/marcel/project/bert_with_pile/checkpoint/bert-pile-0.336B-iters-1M-lr-1e-4-min-1e-5-wmup-10000-dcy-1M-sty-linear-gbs-256-mbs-128-gpu-4-zero-0-mp-2-pp-1-nopp \
@@ -36,8 +36,8 @@ deepspeed pretrain_bert.py \
     --log-validation-ppl-to-tensorboard \
     --tensorboard-dir /data/tensorboard \
     --log-optimizer-states-to-tensorboard \
-    --vocab-file bert-large-uncased-vocab.txt \
-    --data-path /vc_data_blob/users/conglli/the_pile_bert/pile_bert_train_text_sentence \
+    --vocab-file /data/bert/bert-large-uncased-vocab.txt \
+    --data-path /data/bert/enwiki/my-bert_text_sentence \
     --data-impl mmap \
     --deepspeed \
     --deepspeed_config ds_config_bert_bsz256_mbsz128_log100_zero0.json \

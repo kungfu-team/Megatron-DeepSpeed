@@ -17,11 +17,8 @@ RUN git clone https://github.com/NVIDIA/apex && \
     cd apex && \
     git checkout 23.05 && \
     pip install -v \
-        --disable-pip-version-check \
         --no-cache-dir \
-        --no-build-isolation \
-        --config-settings "--build-option=--cuda_ext" \
-        --config-settings "--build-option=--cpp_ext" .
+        --global-option="--cpp_ext" --global-option="--cuda_ext" .
 
 # Megatron-LM requirements
 RUN pip install pybind11 \
