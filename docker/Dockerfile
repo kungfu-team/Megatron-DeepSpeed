@@ -2,10 +2,6 @@
 
 FROM kungfu.azurecr.io/mw-deepspeed-baseline:latest
 
-EXPOSE 6000
-
-# PIP
-
 # Apex
 WORKDIR /workspace
 RUN pip install cxxfilt \

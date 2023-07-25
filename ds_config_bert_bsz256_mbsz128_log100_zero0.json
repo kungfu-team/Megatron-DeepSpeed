@@ -1,7 +1,7 @@
 {
   "train_batch_size" : 256,
   "train_micro_batch_size_per_gpu": 8,
-  "steps_per_print": 100,
+  "steps_per_print": 10,
 
   "zero_optimization": {
     "stage": 0,

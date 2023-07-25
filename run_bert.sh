@@ -1,7 +1,20 @@
 #!/bin/bash
 
-deepspeed pretrain_bert.py \
-    --override-opt_param-scheduler \
+service ssh start
+
+echo "START"
+
+deepspeed \
+    --num_nodes 4 \
+    --num_gpus 1 \
+    --master_addr worker-0 \
+    --master_port=6000 \
+    --elastic_training \
+    --max_elastic_nodes 16 \
+    --min_elastic_nodes 1 \
+    --hostfile hostfile.txt \
+    pretrain_bert.py \
+    --override-lr-scheduler \
     --adam-beta1 0.9 \
     --adam-beta2 0.999 \
     --init-method-std 0.02 \
@@ -23,13 +36,13 @@ deepspeed pretrain_bert.py \
     --log-interval 100 \
     --eval-interval 1000 \
     --eval-iters 10 \
-    --save-interval 10000 \
+    --save-interval 50 \
     --weight-decay 1e-2 \
     --clip-grad 1.0 \
-    --num-workers 1 \
+    --num-workers 4 \
     --fp16 \
-    --load /data \
-    --save /data \
+    --load /data/ckpt \
+    --save /data/ckpt \
     --tensorboard-queue-size 1 \
     --log-timers-to-tensorboard \
     --log-batch-size-to-tensorboard \
