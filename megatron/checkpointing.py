@@ -15,6 +15,7 @@
 
 """Input/output checkpointing."""
 
+import time
 import os
 import random
 import sys
@@ -115,6 +116,9 @@ def save_checkpoint(iteration, model, optimizer, lr_scheduler):
     # Only rank zero of the data parallel writes to the disk.
     if not args.deepspeed:
         model = utils.unwrap_model(model)
+
+    # Marcel
+    print(f"start saving checkpoint at {time.time()}")
 
     print_rank_0('saving checkpoint at iteration {:7d} to {}'.format(
         iteration, args.save))
@@ -436,6 +440,9 @@ def load_checkpoint(model, optimizer, lr_scheduler, load_arg='load', strict=True
 
     print_rank_0(f'  successfully loaded checkpoint from {args.load} '
                  f'at iteration {iteration}')
+
+    # Marcel
+    print(f"finished loading checkpoint at {time.time()}")
 
     return iteration
 
