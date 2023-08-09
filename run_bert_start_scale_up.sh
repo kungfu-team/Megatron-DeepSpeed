@@ -16,7 +16,7 @@ deepspeed \
     --adam-beta1 0.9 \
     --adam-beta2 0.999 \
     --init-method-std 0.02 \
-    --tensor-model-parallel-size 2 \
+    --tensor-model-parallel-size 1 \
     --lr-decay-iters 1000000 \
     --lr-warmup-iters 10000 \
     --micro-batch-size 8 \
@@ -37,7 +37,7 @@ deepspeed \
     --save-interval 50 \
     --weight-decay 1e-2 \
     --clip-grad 1.0 \
-    --num-workers 4 \
+    --num-workers 2 \
     --fp16 \
     --load /data/ckpt \
     --save /data/ckpt \
@@ -53,4 +53,5 @@ deepspeed \
     --deepspeed \
     --deepspeed_config ds_config_bert_bsz256_mbsz128_log100_zero0.json \
     --zero-stage 0 \
-    --pipeline-model-parallel-size 2
+    --pipeline-model-parallel-size 1 \
+    --no-pipeline-parallel

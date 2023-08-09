@@ -13,3 +13,6 @@ dist/
 
 # AML workspace config file
 *config.json
+
+# Python
+.mypy_cache
