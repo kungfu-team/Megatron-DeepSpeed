@@ -15,7 +15,7 @@ torchrun \
         --hidden-size 1024 \
         --num-attention-heads 16 \
         --micro-batch-size 8 \
-        --global-batch-size 64 \
+        --global-batch-size 128 \
         --seq-length 1024 \
         --max-position-embeddings 1024 \
         --train-iters 500000 \
