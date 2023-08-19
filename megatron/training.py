@@ -1129,10 +1129,10 @@ def train(forward_step_func, model, optimizer, lr_scheduler,
         args.random_ltd_layer_num = model[
             0].random_ltd_scheduler.get_random_ltd_layer_num()
 
-    print(f"start training loop at {time.time{}}")
+    print(f"start training loop at {time.time()}")
 
     while iteration < args.train_iters and (args.train_tokens is None or \
-        args.consumed_train_tokens < args.train_tokens):
+            args.consumed_train_tokens < args.train_tokens):
         update_num_microbatches(args.consumed_train_samples)
         if args.deepspeed:
             # inform deepspeed of any batch size changes
