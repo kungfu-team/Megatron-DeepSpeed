@@ -16,3 +16,6 @@ dist/
 
 # Python
 .mypy_cache
+
+# Logs
+*.log
