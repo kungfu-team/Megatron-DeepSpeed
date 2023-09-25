@@ -1133,6 +1133,8 @@ def train(forward_step_func, model, optimizer, lr_scheduler,
 
     while iteration < args.train_iters and (args.train_tokens is None or \
             args.consumed_train_tokens < args.train_tokens):
+        print(f"start iteration {iteration} at {time.time()}")
+
         update_num_microbatches(args.consumed_train_samples)
         if args.deepspeed:
             # inform deepspeed of any batch size changes
