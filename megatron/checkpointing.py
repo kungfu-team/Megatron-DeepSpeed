@@ -110,7 +110,7 @@ def get_checkpoint_tracker_filename(checkpoints_path):
 def save_checkpoint(iteration, model, optimizer, lr_scheduler):
     """Save a model checkpoint."""
     save_start = time.time()
-    print(f"start saving checkpoint at {save_start}")
+    print(f"start megatron.save_checkpoint at {save_start}")
 
     args = get_args()
 
@@ -161,7 +161,11 @@ def save_checkpoint(iteration, model, optimizer, lr_scheduler):
         checkpoint_name = get_checkpoint_name(args.save, iteration)
         if not args.deepspeed:
             ensure_directory_exists(checkpoint_name)
+            torch_save_start = time.time()
             torch.save(state_dict, checkpoint_name)
+            torch_save_dura = time.time() - torch_save_start
+            print(
+                f"megatron.save_checkpoint torch.save took {torch_save_dura}")
 
     if args.deepspeed:
         #megatron model uses state_dict_for_save_checkpointing instead of the standard state_dict
@@ -201,8 +205,8 @@ def save_checkpoint(iteration, model, optimizer, lr_scheduler):
         torch.distributed.barrier()
 
     save_finish = time.time()
-    print(f"saving checkpoint finished at {save_finish}")
-    print(f"saving checkpoint took {save_finish - save_start} s")
+    print(f"finished megatron.save_checkpoint at {save_finish}")
+    print(f"megatron.save_checkpoint took {save_finish - save_start} s")
 
 
 def _transpose_first_dim(t, num_splits, num_splits_first, model):
@@ -295,7 +299,7 @@ def load_checkpoint(model,
         parameters and buffers in model.
     """
     load_start = time.time()
-    print(f"start loading checkpoint at {load_start}")
+    print(f"start megatron.load_checkpoint at {load_start}")
     args = get_args()
     load_dir = getattr(args, load_arg)
 
@@ -362,7 +366,11 @@ def load_checkpoint(model,
 
         # Load the checkpoint.
         try:
+            torch_load_start = time.time()
             state_dict = torch.load(checkpoint_name, map_location='cpu')
+            torch_load_dura = time.time() - torch_load_start
+            print(
+                f"megatron.load_checkpoint torch.load took {torch_load_dura}")
         except ModuleNotFoundError:
             from megatron.fp16_deprecated import loss_scaler
 
@@ -478,8 +486,8 @@ def load_checkpoint(model,
 
     # Marcel
     load_finish = time.time()
-    print(f"finished loading checkpoint at {load_finish}")
-    print(f"loading checkpoint took {load_finish - load_start} s")
+    print(f"finished megatron.load_checkpoint at {load_finish}")
+    print(f"megatron.load_checkpoint took {load_finish - load_start} s")
 
     return iteration
 
