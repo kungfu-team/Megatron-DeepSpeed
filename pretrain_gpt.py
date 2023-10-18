@@ -400,32 +400,18 @@ def main():
     print(f"stop pretrain script at {time.time()}")
 
 
-def sig_handler(a, b):
-    print(f"trapped stop pretrain script at {time.time()}")
-
-
-def trap_sig_with(f):
-    import signal
-
-    signal.signal(signal.SIGINT, f)
-    signal.signal(signal.SIGTERM, f)
-
-
-def trap_sig():
-    trap_sig_with(sig_handler)
-
-
 def live_log():
+    rank = int(os.environ["RANK"])
+    t0 = time.time()
     while True:
-        print(f"python live {time.time()}")
+        now = time.time()
+        print(f"{rank} {now:.2f} live since {now - t0:.02f}")
         time.sleep(1)
 
 
 if __name__ == "__main__":
-    pid = os.fork()
-    if pid > 0:
-        trap_sig()
-        main()
-    else:
-        trap_sig()
-        live_log()
+    from threading import Thread
+
+    t = Thread(target=live_log)
+    t.start()
+    main()
