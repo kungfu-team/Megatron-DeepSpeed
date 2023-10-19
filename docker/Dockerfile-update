@@ -7,3 +7,6 @@ RUN pip install --no-cache-dir pybind11
 # Update
 ADD . /workspace/Megatron-DeepSpeed
 WORKDIR /workspace/Megatron-DeepSpeed
+
+# monkey patch
+ADD api.py /usr/local/lib/python3.10/dist-packages/torch/distributed/elastic/multiprocessing/api.py
