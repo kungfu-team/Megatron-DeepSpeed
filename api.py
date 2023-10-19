@@ -698,9 +698,10 @@ class SubprocessContext(PContext):
                 log.warning(
                     f"Sending process {handler.proc.pid} closing signal {death_sig.name}"
                 )
+                log.warning(f'end time: {time.time()}')
                 handler.close(death_sig=death_sig)
         end = time.monotonic() + timeout
-        print(f'end time: {end}')
+        # print(f'end time: {end}')
         for handler in self.subprocess_handlers.values():
             time_to_wait = end - time.monotonic()
             if time_to_wait <= 0:
