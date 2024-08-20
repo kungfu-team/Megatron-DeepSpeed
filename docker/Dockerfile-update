@@ -1,8 +1,5 @@
 #!/usr/bin/env -S sh -c 'docker build --rm -t kungfu.azurecr.io/mw-megatron-deepspeed-update:latest -f $0 .'
-FROM kungfu.azurecr.io/mw-megatron-deepspeed-kernels:latest
-
-# Hot fix
-RUN pip install --no-cache-dir pybind11
+FROM kungfu.azurecr.io/mw-megatron-deepspeed:latest
 
 # Update
 ADD . /workspace/Megatron-DeepSpeed

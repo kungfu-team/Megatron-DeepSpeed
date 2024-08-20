@@ -13,7 +13,8 @@ RUN pip install --no-cache-dir \
         # Megatron-LM
         six \
         regex \
-        tensorboard
+        tensorboard \
+        pybind11
 
 RUN git clone https://github.com/NVIDIA/apex && \
     cd apex && \
@@ -26,3 +27,5 @@ RUN git clone https://github.com/NVIDIA/apex && \
 
 COPY . /workspace/Megatron-DeepSpeed
 WORKDIR /workspace/Megatron-DeepSpeed
+
+RUN python compile_kernels.py

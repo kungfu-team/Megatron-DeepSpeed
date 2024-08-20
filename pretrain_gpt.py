@@ -387,8 +387,7 @@ def git_ds_info():
     )
 
 
-def main():
-    git_ds_info()
+if __name__ == "__main__":
     print(f"start pretrain script at {time.time()}")
     pretrain(
         train_valid_test_datasets_provider,
@@ -398,20 +397,3 @@ def main():
         data_post_process=data_post_process,
     )
     print(f"stop pretrain script at {time.time()}")
-
-
-def live_log():
-    rank = int(os.environ["RANK"])
-    t0 = time.time()
-    while True:
-        now = time.time()
-        print(f"{rank} {now:.2f} live since {now - t0:.02f}")
-        time.sleep(1)
-
-
-if __name__ == "__main__":
-    from threading import Thread
-
-    t = Thread(target=live_log)
-    t.start()
-    main()

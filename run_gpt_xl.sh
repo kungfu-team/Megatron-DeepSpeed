@@ -1,4 +1,5 @@
 #! /bin/bash
+set -e
 
 DATA_PATH="/data/gpt/enwiki/data_text_document"
 CHECKPOINT_PATH="/data/ckpt"
@@ -6,7 +7,7 @@ CHECKPOINT_PATH="/data/ckpt"
 torchrun \
     --nnodes=1:16 \
     --nproc-per-node=4 \
-    --max-restarts=3 \
+    --max-restarts=10 \
     --rdzv-id=deepspeed-rdvz \
     --rdzv-backend=c10d \
     --rdzv-endpoint=komodo01.doc.res.ic.ac.uk:29400 \
@@ -27,7 +28,7 @@ torchrun \
         --merge-file "/data/gpt/gpt2-merges.txt" \
         --data-impl mmap \
         --split 949,50,1 \
-        --distributed-backend nccl \
+        --distributed-backend $2 \
         --lr 0.00015 \
         --lr-decay-style cosine \
         --min-lr 1.0e-5 \
@@ -40,4 +41,5 @@ torchrun \
         --eval-interval 1000 \
         --eval-iters 10 \
         --fp16 \
-        --pipeline-model-parallel-size 1
+        --pipeline-model-parallel-size 1 \
+2>&1 | tee $CHECKPOINT_PATH/worker$1.log

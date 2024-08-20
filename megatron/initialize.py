@@ -18,6 +18,7 @@
 import random
 import os
 import time
+from datetime import timedelta
 
 import numpy as np
 import torch
@@ -219,10 +220,12 @@ def _initialize_distributed():
         if args.deepspeed or args.ds_inference:
             deepspeed.init_distributed()
         else:
+            timeout = timedelta(seconds=30)
             torch.distributed.init_process_group(
                 backend=args.distributed_backend,
                 world_size=args.world_size, rank=args.rank,
-                init_method=init_method)
+                init_method=init_method,
+                timeout=timeout)
     # Set the tensor model-parallel, pipeline model-parallel, and
     # data-parallel communicators.
     if device_count > 0:
